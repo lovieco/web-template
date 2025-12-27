@@ -35,24 +35,38 @@ jobs:
         env:
           VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
 
+      - name: Install Wrangler
+        run: pnpm add -g wrangler
+
+      - name: Create Cloudflare Pages project if not exists
+        run: |
+          # Try to create the project, ignore error if it already exists
+          wrangler pages project create ${{ vars.CLOUDFLARE_PROJECT_NAME || 'web-template' }} --production-branch main 2>/dev/null || true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
       - name: Deploy Preview to Cloudflare Pages
         id: deploy
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME || 'web-template' }} --branch=${{ github.head_ref }}
+        run: |
+          OUTPUT=$(wrangler pages deploy dist --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME || 'web-template' }} --branch=${{ github.head_ref }} --commit-dirty=true 2>&1)
+          echo "$OUTPUT"
+          URL=$(echo "$OUTPUT" | grep -oP 'https://[^\s]+\.pages\.dev' | head -1)
+          echo "preview-url=$URL" >> $GITHUB_OUTPUT
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Comment Preview URL
         uses: actions/github-script@v7
         with:
           script: |
-            const deploymentUrl = '${{ steps.deploy.outputs.deployment-url }}';
-            if (deploymentUrl) {
+            const previewUrl = '${{ steps.deploy.outputs.preview-url }}';
+            if (previewUrl) {
               github.rest.issues.createComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `🚀 Preview deployment is ready!\n\n**Preview URL:** ${deploymentUrl}`
+                body: `🚀 Preview deployment is ready!\n\n**Preview URL:** ${previewUrl}`
               });
             }
