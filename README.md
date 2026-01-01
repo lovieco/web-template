@@ -1,6 +1,6 @@
 # Web Template
 
-A modern, production-ready web application template built with React, Vite, TypeScript, and shadcn/ui. Includes state management, testing, and automated CI/CD deployment to Cloudflare Pages.
+A modern, production-ready web application template built with React, Vite, TypeScript, and shadcn/ui. Includes database integration with Supabase, data fetching with TanStack Query, routing with React Router, state management, testing, and automated CI/CD deployment to Cloudflare Pages.
 
 ## Features
 
@@ -9,6 +9,9 @@ A modern, production-ready web application template built with React, Vite, Type
 - 📘 **TypeScript** - Type-safe development
 - 🎨 **shadcn/ui** - Beautiful, accessible UI components
 - 🎯 **Tailwind CSS v4** - Utility-first CSS framework
+- 🗄️ **Supabase** - PostgreSQL database with authentication
+- 🔄 **TanStack Query** - Data fetching and caching
+- 🧭 **React Router v7** - Client-side routing
 - 🐻 **Zustand** - Lightweight state management
 - 🧪 **Vitest** - Fast unit testing framework
 - 📝 **ESLint + Prettier** - Code quality and formatting
@@ -31,6 +34,13 @@ cd web-template
 
 # Install dependencies
 pnpm install
+
+# Copy environment variables
+cp .env.example .env
+
+# Configure your Supabase credentials in .env
+# VITE_SUPABASE_URL=your-project-url
+# VITE_SUPABASE_ANON_KEY=your-anon-key
 
 # Start development server
 pnpm dev
@@ -192,10 +202,22 @@ describe("Button", () => {
 Create a `.env` file for local development:
 
 ```env
+# Supabase Configuration
+VITE_SUPABASE_URL=your-project-url
+VITE_SUPABASE_ANON_KEY=your-anon-key
+
+# API Configuration (optional)
 VITE_API_BASE_URL=https://api.example.com
 ```
 
 For production, configure variables in GitHub repository settings or Cloudflare Pages dashboard.
+
+### Supabase Setup
+
+1. Create a project at [supabase.com](https://supabase.com)
+2. Get your project URL and anon key from Project Settings → API
+3. Add them to your `.env` file
+4. Create your database schema using the SQL Editor or Table Editor
 
 ## Customization
 
