@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,7 +10,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { useCounterStore } from "@/store/counter";
 
-export default function StateExample() {
+export const Route = createFileRoute("/examples/state")({
+  component: StateExampleComponent,
+});
+
+function StateExampleComponent() {
   const { count, increment, decrement, reset } = useCounterStore();
 
   return (

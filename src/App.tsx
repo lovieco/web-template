@@ -1,36 +1,23 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { queryClient } from "@/lib/query-client";
+import { routeTree } from "./routeTree.gen";
 
-// Layout
-import Layout from "@/components/Layout";
+// Create a new router instance
+const router = createRouter({ routeTree });
 
-// Pages
-import Home from "@/pages/Home";
-import About from "@/pages/About";
-import NotFound from "@/pages/NotFound";
-import ExamplesIndex from "@/pages/examples/Index";
-import QueryExample from "@/pages/examples/QueryExample";
-import StateExample from "@/pages/examples/StateExample";
-import SupabaseExample from "@/pages/examples/SupabaseExample";
+// Register the router instance for type safety
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="examples" element={<ExamplesIndex />} />
-            <Route path="examples/query" element={<QueryExample />} />
-            <Route path="examples/state" element={<StateExample />} />
-            <Route path="examples/supabase" element={<SupabaseExample />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

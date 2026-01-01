@@ -1,14 +1,19 @@
-import { Link } from "react-router-dom";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function About() {
+export const Route = createFileRoute("/about")({
+  component: AboutComponent,
+});
+
+function AboutComponent() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="mb-4 text-4xl font-bold">About This Template</h1>
         <p className="text-muted-foreground text-xl">
-          A production-ready React template with modern tooling
+          A production-ready React template with modern tooling and the complete
+          TanStack suite
         </p>
       </div>
 
@@ -39,10 +44,19 @@ export default function About() {
                 <strong>Supabase</strong> - Database and authentication
               </li>
               <li>
+                <strong>TanStack Router</strong> - Type-safe file-based routing
+              </li>
+              <li>
                 <strong>TanStack Query</strong> - Data fetching and caching
               </li>
               <li>
-                <strong>React Router v7</strong> - Client-side routing
+                <strong>TanStack Table</strong> - Headless table library
+              </li>
+              <li>
+                <strong>TanStack Form</strong> - Type-safe form management
+              </li>
+              <li>
+                <strong>TanStack Virtual</strong> - Virtualization for lists
               </li>
               <li>
                 <strong>Zustand</strong> - State management
@@ -67,8 +81,8 @@ export default function About() {
               <li>✅ CI/CD with GitHub Actions</li>
               <li>✅ Cloudflare Pages deployment</li>
               <li>✅ Database integration with Supabase</li>
-              <li>✅ Data fetching with TanStack Query</li>
-              <li>✅ Client-side routing</li>
+              <li>✅ Complete TanStack suite integration</li>
+              <li>✅ File-based routing with type safety</li>
               <li>✅ Component library with shadcn/ui</li>
             </ul>
           </CardContent>

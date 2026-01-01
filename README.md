@@ -1,6 +1,6 @@
 # Web Template
 
-A modern, production-ready web application template built with React, Vite, TypeScript, and shadcn/ui. Includes database integration with Supabase, data fetching with TanStack Query, routing with React Router, state management, testing, and automated CI/CD deployment to Cloudflare Pages.
+A modern, production-ready web application template built with React, Vite, TypeScript, and shadcn/ui. Features the complete TanStack suite (Router, Query, Table, Form, Virtual) for type-safe routing, data fetching, tables, forms, and virtualization. Includes Supabase for database and authentication, plus automated CI/CD deployment to Cloudflare Pages.
 
 ## Features
 
@@ -10,8 +10,11 @@ A modern, production-ready web application template built with React, Vite, Type
 - 🎨 **shadcn/ui** - Beautiful, accessible UI components
 - 🎯 **Tailwind CSS v4** - Utility-first CSS framework
 - 🗄️ **Supabase** - PostgreSQL database with authentication
+- 🧭 **TanStack Router** - Type-safe file-based routing
 - 🔄 **TanStack Query** - Data fetching and caching
-- 🧭 **React Router v7** - Client-side routing
+- 📋 **TanStack Table** - Headless table library
+- 📝 **TanStack Form** - Type-safe form management
+- 📜 **TanStack Virtual** - Virtualization for large lists
 - 🐻 **Zustand** - Lightweight state management
 - 🧪 **Vitest** - Fast unit testing framework
 - 📝 **ESLint + Prettier** - Code quality and formatting

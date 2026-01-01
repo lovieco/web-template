@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +19,11 @@ async function fetchPosts() {
   return response.json();
 }
 
-export default function QueryExample() {
+export const Route = createFileRoute("/examples/query")({
+  component: QueryExampleComponent,
+});
+
+function QueryExampleComponent() {
   const [enabled, setEnabled] = useState(true);
 
   const { data, isLoading, isError, error, refetch, isFetching } = useQuery({

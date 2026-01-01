@@ -41,3 +41,4 @@ coverage
 # Misc
 .eslintcache
 *.pem
+src/routeTree.gen.ts

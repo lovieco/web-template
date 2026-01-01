@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,7 +8,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export default function ExamplesIndex() {
+export const Route = createFileRoute("/examples/")({
+  component: ExamplesIndexComponent,
+});
+
+function ExamplesIndexComponent() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -37,12 +41,54 @@ export default function ExamplesIndex() {
           <CardHeader>
             <CardTitle>TanStack Query</CardTitle>
             <CardDescription>
-              Data fetching, caching, and mutations with TanStack Query
+              Data fetching, caching, and mutations
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Button asChild className="w-full">
               <Link to="/examples/query">View Example</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>TanStack Table</CardTitle>
+            <CardDescription>
+              Powerful data tables with sorting, filtering, and pagination
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild className="w-full">
+              <Link to="/examples/table">View Example</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>TanStack Form</CardTitle>
+            <CardDescription>
+              Type-safe forms with validation using Zod
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild className="w-full">
+              <Link to="/examples/form">View Example</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>TanStack Virtual</CardTitle>
+            <CardDescription>
+              Virtual scrolling for large lists
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild className="w-full">
+              <Link to="/examples/virtual">View Example</Link>
             </Button>
           </CardContent>
         </Card>
@@ -57,20 +103,6 @@ export default function ExamplesIndex() {
           <CardContent>
             <Button asChild className="w-full">
               <Link to="/examples/state">View Example</Link>
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>UI Components</CardTitle>
-            <CardDescription>
-              shadcn/ui components showcase and usage
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button asChild className="w-full">
-              <Link to="/examples/components">View Example</Link>
             </Button>
           </CardContent>
         </Card>

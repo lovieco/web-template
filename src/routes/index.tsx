@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,14 +8,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export default function Home() {
+export const Route = createFileRoute("/")({
+  component: HomeComponent,
+});
+
+function HomeComponent() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8 text-center">
         <h1 className="mb-4 text-4xl font-bold">Welcome to Web Template</h1>
         <p className="text-muted-foreground text-xl">
-          A modern React template with Supabase, TanStack Query, and React
-          Router
+          A modern React template with Supabase and the complete TanStack suite
         </p>
       </div>
 
@@ -38,6 +41,22 @@ export default function Home() {
 
         <Card>
           <CardHeader>
+            <CardTitle>🧭 TanStack Router</CardTitle>
+            <CardDescription>Type-Safe Routing</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="mb-4 text-sm">
+              File-based routing with type safety, loaders, and search params
+              validation.
+            </p>
+            <Button asChild variant="outline" className="w-full">
+              <Link to="/about">View Example</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
             <CardTitle>🔄 TanStack Query</CardTitle>
             <CardDescription>Data Fetching & Caching</CardDescription>
           </CardHeader>
@@ -54,31 +73,47 @@ export default function Home() {
 
         <Card>
           <CardHeader>
-            <CardTitle>🧭 React Router v7</CardTitle>
-            <CardDescription>Client-Side Routing</CardDescription>
+            <CardTitle>📊 TanStack Table</CardTitle>
+            <CardDescription>Headless Table Library</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="mb-4 text-sm">
-              Type-safe routing with nested routes, loaders, and actions.
+              Powerful tables with sorting, filtering, pagination, and column
+              resizing.
             </p>
             <Button asChild variant="outline" className="w-full">
-              <Link to="/about">View Example</Link>
+              <Link to="/examples/table">View Example</Link>
             </Button>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>🎨 shadcn/ui</CardTitle>
-            <CardDescription>UI Components</CardDescription>
+            <CardTitle>📝 TanStack Form</CardTitle>
+            <CardDescription>Type-Safe Forms</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="mb-4 text-sm">
-              Beautiful, accessible components built with Radix UI and Tailwind
-              CSS.
+              Headless form library with validation, field arrays, and async
+              validation.
             </p>
             <Button asChild variant="outline" className="w-full">
-              <Link to="/examples/components">View Components</Link>
+              <Link to="/examples/form">View Example</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>📜 TanStack Virtual</CardTitle>
+            <CardDescription>Virtualization</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="mb-4 text-sm">
+              Efficiently render large lists and tables with virtual scrolling.
+            </p>
+            <Button asChild variant="outline" className="w-full">
+              <Link to="/examples/virtual">View Example</Link>
             </Button>
           </CardContent>
         </Card>
@@ -95,6 +130,22 @@ export default function Home() {
             </p>
             <Button asChild variant="outline" className="w-full">
               <Link to="/examples/state">View Example</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>🎨 shadcn/ui</CardTitle>
+            <CardDescription>UI Components</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="mb-4 text-sm">
+              Beautiful, accessible components built with Radix UI and Tailwind
+              CSS.
+            </p>
+            <Button asChild variant="outline" className="w-full">
+              <Link to="/examples/components">View Components</Link>
             </Button>
           </CardContent>
         </Card>

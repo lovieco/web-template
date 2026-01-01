@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,7 +9,11 @@ import {
 } from "@/components/ui/card";
 import { useUser } from "@/hooks/use-supabase";
 
-export default function SupabaseExample() {
+export const Route = createFileRoute("/examples/supabase")({
+  component: SupabaseExampleComponent,
+});
+
+function SupabaseExampleComponent() {
   const { user, loading } = useUser();
 
   return (
