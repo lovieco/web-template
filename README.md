@@ -184,6 +184,8 @@ import { Button } from "../../components/ui/button"
   - [CI/CD Pipeline Overview](#cicd-pipeline-overview)
   - [Cloudflare Pages Setup](#cloudflare-pages-setup)
   - [Manual Deployment with Wrangler](#manual-deployment-with-wrangler)
+  - [Vercel Setup](#vercel-setup)
+  - [Deployment Build Configuration](#deployment-build-configuration)
 - [Environment Configuration](#environment-configuration)
   - [Environment Variables](#environment-variables)
   - [Supabase Setup Guide](#supabase-setup-guide)
@@ -3142,12 +3144,16 @@ metrics.timing('api_response', 250)
 
 ### CI/CD Pipeline Overview
 
-This template includes three GitHub Actions workflows:
+This template includes GitHub Actions workflows for both **Cloudflare Pages** and **Vercel** deployments:
+
+#### Shared Workflows
 
 1. **CI Workflow** (`.github/workflows/ci.yml`)
    - Triggers: Pull requests, pushes to main
    - Steps: Install deps → Lint → Type-check → Test → Build
    - Purpose: Validate code quality before merging
+
+#### Cloudflare Pages Workflows
 
 2. **Production Deployment** (`.github/workflows/deploy.yml`)
    - Triggers: Push to `main` branch
@@ -3158,6 +3164,21 @@ This template includes three GitHub Actions workflows:
    - Triggers: Pull requests
    - Steps: Build → Deploy to Cloudflare Pages (preview)
    - URL: Unique preview URL per PR
+
+#### Vercel Workflows
+
+4. **Production Deployment** (`.github/workflows/deploy-vercel.yml`)
+   - Triggers: Push to `main` branch
+   - Steps: Build → Deploy to Vercel (production)
+   - URL: Your Vercel production domain
+
+5. **Preview Deployment** (`.github/workflows/preview-vercel.yml`)
+   - Triggers: Pull requests
+   - Steps: Build → Deploy to Vercel (preview)
+   - URL: Unique Vercel preview URL per PR
+   - Posts preview URL as PR comment
+
+**Note:** You can use both platforms simultaneously, or disable workflows you don't need by deleting or renaming the workflow files.
 
 ### Cloudflare Pages Setup
 
@@ -3243,6 +3264,78 @@ pnpm dlx wrangler pages deploy dist \
   --var VITE_API_BASE_URL=https://api.example.com
 ```
 
+### Vercel Setup
+
+**Step 1: Install Vercel CLI (Optional)**
+```bash
+pnpm add -g vercel
+```
+
+**Step 2: Connect to Vercel**
+1. Visit [vercel.com](https://vercel.com) and sign in
+2. Import your repository from GitHub
+3. Configure project settings:
+   - **Framework Preset:** Vite
+   - **Build Command:** `pnpm build`
+   - **Output Directory:** `dist`
+   - **Install Command:** `pnpm install`
+
+**Step 3: Get Vercel Credentials**
+```bash
+# Login to Vercel CLI
+vercel login
+
+# Link to existing project or create new one
+vercel link
+
+# Get Project ID and Org ID from .vercel/project.json
+cat .vercel/project.json
+```
+
+**Step 4: Configure GitHub Secrets**
+
+Go to your GitHub repo → Settings → Secrets and variables → Actions → New repository secret
+
+**Required Secrets:**
+
+| Secret Name | Value | Where to Find |
+|------------|-------|---------------|
+| `VERCEL_TOKEN` | Vercel API token | [Vercel Dashboard → Settings → Tokens](https://vercel.com/account/tokens) |
+| `VERCEL_ORG_ID` | Organization ID | `.vercel/project.json` or Vercel Dashboard |
+| `VERCEL_PROJECT_ID` | Project ID | `.vercel/project.json` or Vercel Dashboard |
+| `VITE_SUPABASE_ANON_KEY` | Supabase anon key | Supabase Dashboard → Project Settings → API |
+
+**Optional Variables:**
+
+| Variable Name | Description |
+|--------------|-------------|
+| `VITE_SUPABASE_URL` | Production Supabase URL |
+| `VITE_API_BASE_URL` | Production API URL |
+
+**Step 5: First Deployment**
+
+```bash
+# Option 1: Push to main branch (triggers GitHub Action)
+git push origin main
+
+# Option 2: Deploy manually with Vercel CLI
+vercel --prod
+
+# Option 3: Create PR (triggers preview deployment)
+git checkout -b feature/my-feature
+git push origin feature/my-feature
+# Open PR on GitHub
+```
+
+**Step 6: Configure Environment Variables in Vercel**
+
+1. Go to Vercel Dashboard → Your Project → Settings → Environment Variables
+2. Add production variables:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+   - `VITE_API_BASE_URL` (optional)
+3. Set environment: Production, Preview, or Development
+
 ### Deployment Build Configuration
 
 **Cloudflare Pages automatically detects:**
@@ -3261,6 +3354,23 @@ command = "pnpm build"
 
 [build.upload]
 dir = "dist"
+```
+
+**Vercel configuration** (`vercel.json`):
+```json
+{
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
+  "devCommand": "pnpm dev",
+  "installCommand": "pnpm install",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
 ```
 
 ## Environment Configuration
